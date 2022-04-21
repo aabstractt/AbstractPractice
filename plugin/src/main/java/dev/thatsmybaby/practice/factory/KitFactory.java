@@ -28,7 +28,15 @@ public final class KitFactory {
                 contents.put(entry.getKey(), Placeholders.stringToItem(entry.getValue()));
             }
 
-            this.kits.put(kitName.toLowerCase(), new GameKit(kitName, contents));
+            this.registerNewKit(new GameKit(kitName, contents), false);
+        }
+    }
+
+    public void registerNewKit(GameKit kit, boolean forceSave) {
+        this.kits.put(kit.getName(), kit);
+
+        if (forceSave) {
+            kit.forceSave();
         }
     }
 
