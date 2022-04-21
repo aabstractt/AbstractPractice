@@ -19,7 +19,7 @@ public final class CreateKitArgument extends PlayerArgument {
 
             return;
         }
-        
+
         if (KitFactory.getInstance().getKit(args[0]) != null) {
             sender.sendMessage(TextFormat.RED + "Kit " + args[0] + " already exists");
 

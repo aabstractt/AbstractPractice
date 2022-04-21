@@ -29,4 +29,8 @@ public final class Placeholders {
     public static Item stringToItem(String string) {
         return null;
     }
+
+    public static String replacePlaceholders(String k, String... args) {
+        return null;
+    }
 }

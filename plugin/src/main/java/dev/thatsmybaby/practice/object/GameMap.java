@@ -26,12 +26,18 @@ public final class GameMap {
     @Setter private Vector3 firstCorner;
     @Setter private Vector3 secondCorner;
 
+    private int timesPlayed = 0;
+
     public void addKit(GameKit kit) {
         this.kits.add(kit);
     }
 
     public void removeKit(String kitName) {
         this.kits.removeIf(kit -> kit.getName().equalsIgnoreCase(kitName));
+    }
+
+    public int increaseTimesPlayed() {
+        return this.timesPlayed++;
     }
 
     public void forceSave() {

@@ -16,7 +16,7 @@ public final class KitFactory {
 
     @Getter private final static KitFactory instance = new KitFactory();
 
-    private final Map<String, GameKit> kits = new HashMap<>();
+    @Getter private final Map<String, GameKit> kits = new HashMap<>();
 
     public void init() {
         Config config = new Config(new File(AbstractPractice.getInstance().getDataFolder(), "kits.json"));

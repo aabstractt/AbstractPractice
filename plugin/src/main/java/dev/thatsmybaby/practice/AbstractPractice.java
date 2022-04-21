@@ -1,10 +1,7 @@
 package dev.thatsmybaby.practice;
 
 import cn.nukkit.plugin.PluginBase;
-import dev.thatsmybaby.practice.arguments.CornerArgument;
-import dev.thatsmybaby.practice.arguments.CreateArgument;
-import dev.thatsmybaby.practice.arguments.CreateKitArgument;
-import dev.thatsmybaby.practice.arguments.SpawnArgument;
+import dev.thatsmybaby.practice.arguments.*;
 import dev.thatsmybaby.practice.factory.KitFactory;
 import dev.thatsmybaby.practice.factory.MapFactory;
 import dev.thatsmybaby.shared.command.Argument;
@@ -26,7 +23,8 @@ public final class AbstractPractice extends PluginBase {
                 new CreateArgument("create", "Create a new practice map", "abstract.practice.create"),
                 new CreateKitArgument("createkit", "Create a new practice kit", "abstract.practice.create.kit"),
                 new SpawnArgument("spawn", "Set map spawn", "abstract.practice.spawn"),
-                new CornerArgument("corner", "Set map corner", "abstract.practice.corner")
+                new CornerArgument("corner", "Set map corner", "abstract.practice.corner"),
+                new AddKitArgument("addkit", "Add kit to a map", "abstract.practice.add.kit")
         );
     }
 
@@ -36,6 +34,10 @@ public final class AbstractPractice extends PluginBase {
         command.registerArgument(arguments);
 
         this.getServer().getCommandMap().register("coreadmin", command);
+    }
+
+    public static void debug(String message) {
+
     }
 
     public static boolean isSchematic() {

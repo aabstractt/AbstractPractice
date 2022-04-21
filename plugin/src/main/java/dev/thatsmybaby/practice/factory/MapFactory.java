@@ -70,4 +70,8 @@ public final class MapFactory {
     public GameMap getMap(String mapName) {
         return this.maps.get(mapName.toLowerCase());
     }
+
+    public GameMap getRandomMap() {
+        return null;
+    }
 }
