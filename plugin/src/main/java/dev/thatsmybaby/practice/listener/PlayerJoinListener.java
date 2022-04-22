@@ -29,18 +29,14 @@ public final class PlayerJoinListener implements Listener {
 
             GameMatch match = MatchFactory.getInstance().getPlayerMatch(crossServerPlayer.getOpponent());
 
-            if (match == null) {
-                match = MatchFactory.getInstance().createMatch(DuelMatch.class, crossServerPlayer.getKitName(), null);
+            if (match == null && (match = MatchFactory.getInstance().createMatch(DuelMatch.class, crossServerPlayer.getKitName(), null)) == null) {
+                player.kick(TextFormat.RED + "Tried to start a match but there are no available arenas.");
 
-                if (match == null) {
-                    player.kick(TextFormat.RED + "Tried to start a match but there are no available arenas.");
+                return;
+            }
 
-                    return;
-                }
-
-                if (!match.worldGenerated()) {
-                    match.generateWorld();
-                }
+            if (!match.worldGenerated()) {
+                match.generateWorld();
             }
 
             match.joinAsPlayer(player);
