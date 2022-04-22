@@ -25,8 +25,8 @@ public final class AbstractPractice extends PluginBase {
             firstPlayer.sendMessage(Placeholders.replacePlaceholders("QUEUE_FOUND_OPPONENT", firstPlayer.getName(), secondPlayer.getName()));
             secondPlayer.sendMessage(Placeholders.replacePlaceholders("QUEUE_FOUND_OPPONENT", secondPlayer.getName(), firstPlayer.getName()));
 
-            queue.getPlayers().remove(firstPlayer.getName());
-            queue.getPlayers().remove(secondPlayer.getName());
+            queue.remove(firstPlayer.getName());
+            queue.remove(secondPlayer.getName());
 
             GameProvider.getInstance().publish(new MatchRequestPacket() {{
                 this.serverName = getServerName();

@@ -35,6 +35,6 @@ public final class QueueFactory {
     }
 
     public GameQueue getPlayerQueue(Player player) {
-        return this.queueSet.stream().filter(queue -> queue.getPlayers().contains(player.getName())).findFirst().orElse(null);
+        return this.queueSet.stream().filter(queue -> queue.getProfileLinkedHashMap().containsKey(player.getName())).findFirst().orElse(null);
     }
 }

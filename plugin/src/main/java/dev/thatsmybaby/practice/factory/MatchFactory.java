@@ -44,8 +44,8 @@ public final class MatchFactory {
                 return;
             }
 
-            queue.getPlayers().remove(firstPlayer.getName());
-            queue.getPlayers().remove(secondPlayer.getName());
+            queue.remove(firstPlayer.getName());
+            queue.remove(secondPlayer.getName());
 
             match.joinAsPlayer(firstPlayer);
             match.joinAsPlayer(secondPlayer);
