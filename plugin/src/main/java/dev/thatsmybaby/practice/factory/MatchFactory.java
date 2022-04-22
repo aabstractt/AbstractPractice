@@ -9,7 +9,6 @@ import dev.thatsmybaby.practice.object.match.DuelMatch;
 import dev.thatsmybaby.shared.Placeholders;
 import dev.thatsmybaby.shared.TaskUtils;
 import dev.thatsmybaby.shared.factory.QueueFactory;
-import dev.thatsmybaby.shared.object.GameQueue;
 import dev.thatsmybaby.shared.provider.GameProvider;
 import lombok.Getter;
 
@@ -31,9 +30,8 @@ public final class MatchFactory {
         }
 
         QueueFactory.getInstance().init(KitFactory.getInstance().getKits().values().stream().map(GameKit::getName).collect(Collectors.toList()));
-
         QueueFactory.setHandler((queue, firstPlayer, secondPlayer) -> {
-            GameMatch match = this.createMatch(DuelMatch.class, queue, null);
+            GameMatch match = this.createMatch(DuelMatch.class, queue.getKitName(), null);
 
             if (match == null) {
                 Placeholders.log("Match for " + queue.getQueueName() + " not found... Trying to search again in 5 seconds");
@@ -63,8 +61,8 @@ public final class MatchFactory {
         });
     }
 
-    public GameMatch createMatch(Class<? extends GameMatch> type, GameQueue queue, GameMap map) {
-        GameMatch match = this.getRandomMatch(type, queue, map);
+    public GameMatch createMatch(Class<? extends GameMatch> type, String kitName, GameMap map) {
+        GameMatch match = this.getRandomMatch(type, kitName, map);
 
         if (match != null) {
             return match;
@@ -74,7 +72,7 @@ public final class MatchFactory {
             return null;
         }
 
-        GameKit kit = KitFactory.getInstance().getKit(queue.getKitName());
+        GameKit kit = KitFactory.getInstance().getKit(kitName);
 
         if (kit == null) {
             return null;
@@ -91,11 +89,11 @@ public final class MatchFactory {
         }
     }
 
-    private GameMatch getRandomMatch(Class<? extends GameMatch> type, GameQueue queue, GameMap map) {
+    private GameMatch getRandomMatch(Class<? extends GameMatch> type, String kitName, GameMap map) {
         Stream<GameMatch> stream = this.matchMap.values().stream().
                 filter(match -> match.getClass().isAssignableFrom(type)).
                 filter(GameMatch::isIdle).
-                filter(match -> match.getKit().getName().equals(queue.getKitName()));
+                filter(match -> match.getKit().getName().equals(kitName));
 
         if (map != null) {
             stream = stream.filter(match -> match.getMap().getMapName().equals(map.getMapName()));

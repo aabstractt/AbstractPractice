@@ -6,7 +6,7 @@ import lombok.Getter;
 
 public abstract class RedisPacket {
 
-    @Getter protected int id;
+    @Getter private final int id;
 
     public RedisPacket(int id) {
         this.id = id;

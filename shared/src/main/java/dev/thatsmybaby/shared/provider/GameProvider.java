@@ -19,7 +19,7 @@ import java.util.function.Function;
 @SuppressWarnings({"UnstableApiUsage", "deprecation"})
 public final class GameProvider {
 
-    public final static String HASH_SERVER_MATCH_REQUEST = "server_match_request:%s";
+    public final static String HASH_PLAYER_STORAGE = "player_storage:%s";
 
     @Getter private final static GameProvider instance = new GameProvider();
 
@@ -48,7 +48,7 @@ public final class GameProvider {
         this.handler = handler;
 
         ForkJoinPool.commonPool().execute(() -> execute(jedis -> {
-            jedis.subscribe(this.jedisPubSub = new Subscription(), "SurvivalSync".getBytes(StandardCharsets.UTF_8));
+            jedis.subscribe(this.jedisPubSub = new Subscription(), "AbstractPractice".getBytes(StandardCharsets.UTF_8));
         }));
 
         if (this.enabled()) {
@@ -63,6 +63,23 @@ public final class GameProvider {
                 new MatchRequestPacket(),
                 new MatchResponsePacket()
         );
+    }
+
+    public void setPlayerMatch(String name, String matchId, String lastServer) {
+        execute(jedis -> {
+            String hash = String.format(HASH_PLAYER_STORAGE, name);
+
+            if (matchId == null) {
+                jedis.hdel(hash, jedis.hgetAll(hash).values().toArray(new String[]{}));
+
+                return;
+            }
+
+            jedis.hset(hash, new HashMap<String, String>() {{
+                put("match", matchId);
+                put("lastServer", lastServer);
+            }});
+        });
     }
 
     public void publish(RedisPacket pk) {
