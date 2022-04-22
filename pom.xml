@@ -16,7 +16,7 @@
 
     <modules>
         <module>lobby</module>
-        <module>practice</module>
+        <module>plugin</module>
         <module>shared</module>
     </modules>
 

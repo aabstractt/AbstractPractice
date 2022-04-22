@@ -48,9 +48,7 @@ public class ScoreboardBuilder {
     public void update() {
         Player instance = this.player.getInstance();
 
-        if (instance == null || !instance.isOnline()) {
-            return;
-        }
+        if (instance == null || !instance.isOnline()) return;
 
         GameMatch match = this.player.getMatch();
 
@@ -143,9 +141,7 @@ public class ScoreboardBuilder {
     public void setLine(int scoreboardId, String text) {
         Player instance = this.player.getInstance();
 
-        if (instance == null || !instance.isOnline()) {
-            return;
-        }
+        if (instance == null || !instance.isOnline()) return;
 
         instance.dataPacket(getPackets(scoreboardId, text, SetScorePacket.TYPE_REMOVE));
 

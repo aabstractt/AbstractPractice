@@ -24,25 +24,30 @@ public final class AbstractPractice extends PluginBase {
         QueueFactory.getInstance().init();
         MapFactory.getInstance().init();
 
+        this.getServer().getCommandMap().register("coreadmin", new CoreAdminCommand("coreadmin", "Abstract Practice management command", "", new String[]{"ca"}));
+
+        this.getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+        this.getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+
         this.registerArguments(
                 new CreateArgument("create", "Create a new practice map", "abstract.practice.create"),
                 new CreateKitArgument("createkit", "Create a new practice kit", "abstract.practice.create.kit"),
                 new SpawnArgument("spawn", "Set map spawn", "abstract.practice.spawn"),
                 new CornerArgument("corner", "Set map corner", "abstract.practice.corner"),
-                new AddKitArgument("addkit", "Add kit to a map", "abstract.practice.add.kit"),
-                new QueueJoinArgument("queuejoin", "Join to the queue", "abstract.practice.queue")
+                new AddKitArgument("addkit", "Add kit to a map", "abstract.practice.add.kit")
         );
 
-        this.getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
-        this.getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        if (released()) return;
+
+        this.getLogger().warning("Registering 'QueueJoinArgument' because this is a non released version");
+
+        registerArguments(
+                new QueueJoinArgument("queuejoin", "Join to the queue", "abstract.practice.queue")
+        );
     }
 
     private void registerArguments(Argument... arguments) {
-        CoreAdminCommand command = new CoreAdminCommand("coreadmin", "Abstract Practice management command", "", new String[]{"ca"});
-
-        command.registerArgument(arguments);
-
-        this.getServer().getCommandMap().register("coreadmin", command);
+        ((CoreAdminCommand) this.getServer().getCommandMap().getCommand("coreadmin")).registerArgument(arguments);
     }
 
     public static String getServerName() {
