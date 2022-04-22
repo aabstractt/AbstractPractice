@@ -58,38 +58,37 @@ public final class GameProvider {
         }
 
         registerMessage(
-                new ServerRequestKitsPacket(),
-                new ServerResponseKitsPacket(),
-                new MatchRequestPacket(),
-                new MatchResponsePacket()
+                new ServerInfoRequestPacket(),
+                new ServerInfoResponsePacket()
         );
     }
 
-    public void setPlayerMatch(String name, String matchId, String lastServer) {
+    public void setPlayerMatchStatus(String xuid, String kitName, boolean ranked, String lastServer) {
         execute(jedis -> {
-            String hash = String.format(HASH_PLAYER_STORAGE, name);
+            String hash = String.format(HASH_PLAYER_STORAGE, xuid);
 
-            if (matchId == null) {
+            if (kitName == null) {
                 jedis.hdel(hash, jedis.hgetAll(hash).values().toArray(new String[]{}));
 
                 return;
             }
 
             jedis.hset(hash, new HashMap<String, String>() {{
-                put("match", matchId);
+                put("kitName", kitName);
+                put("ranked", Boolean.toString(ranked));
                 put("lastServer", lastServer);
             }});
         });
     }
 
-    public void publish(RedisPacket pk) {
+    public static void publish(RedisPacket pk) {
         CompletableFuture.runAsync(() -> execute(jedis -> {
             ByteArrayDataOutput stream = ByteStreams.newDataOutput();
 
             stream.writeInt(pk.getId());
             pk.encode(stream);
 
-            jedis.publish("SurvivalSync".getBytes(StandardCharsets.UTF_8), stream.toByteArray());
+            jedis.publish("AbstractPractice".getBytes(StandardCharsets.UTF_8), stream.toByteArray());
         }));
     }
 

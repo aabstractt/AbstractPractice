@@ -1,8 +1,10 @@
 package dev.thatsmybaby.shared;
 
+import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.network.protocol.TransferPacket;
 
 public final class Placeholders {
 
@@ -36,5 +38,11 @@ public final class Placeholders {
 
     public static void log(String message) {
 
+    }
+
+    public static void connectTo(Player player, String serverName) {
+        player.dataPacket(new TransferPacket() {{
+            this.address = serverName;
+        }});
     }
 }

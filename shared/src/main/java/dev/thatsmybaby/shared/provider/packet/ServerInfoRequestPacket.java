@@ -3,11 +3,11 @@ package dev.thatsmybaby.shared.provider.packet;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
-public final class ServerRequestKitsPacket extends RedisPacket {
+public class ServerInfoRequestPacket extends RedisPacket {
 
     public String serverName;
 
-    public ServerRequestKitsPacket() {
+    public ServerInfoRequestPacket() {
         super(0);
     }
 

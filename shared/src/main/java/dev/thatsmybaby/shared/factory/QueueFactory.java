@@ -20,11 +20,11 @@ public final class QueueFactory {
 
     @Setter @Getter private static Callback handler = null;
 
-    public void init(List<String> kits) {
+    public void init(List<String> kits, String serverName) {
         for (String kitName : kits) {
-            this.queueSet.add(new GameQueue(kitName, false));
+            this.queueSet.add(new GameQueue(serverName, kitName, false));
 
-            this.queueSet.add(new GameQueue(kitName, true));
+            this.queueSet.add(new GameQueue(serverName, kitName, true));
         }
 
         Server.getInstance().getScheduler().scheduleRepeatingTask(() -> queueSet.forEach(GameQueue::update), 20, true);

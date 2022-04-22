@@ -20,7 +20,7 @@ public final class MapFactory {
 
     @Getter private final static MapFactory instance = new MapFactory();
 
-    private final Map<String, GameMap> maps = new HashMap<>();
+    @Getter private final Map<String, GameMap> maps = new HashMap<>();
 
     public void init() {
         Config config = new Config(new File(AbstractPractice.getInstance().getDataFolder(), "maps.json"));

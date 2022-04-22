@@ -29,7 +29,8 @@ public final class MatchFactory {
             return;
         }
 
-        QueueFactory.getInstance().init(KitFactory.getInstance().getKits().values().stream().map(GameKit::getName).collect(Collectors.toList()));
+        QueueFactory.getInstance().init(KitFactory.getInstance().getKits().values().stream().map(GameKit::getName).collect(Collectors.toList()), null);
+
         QueueFactory.setHandler((queue, firstPlayer, secondPlayer) -> {
             GameMatch match = this.createMatch(DuelMatch.class, queue.getKitName(), null);
 

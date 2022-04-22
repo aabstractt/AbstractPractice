@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 @RequiredArgsConstructor @Getter
 public final class GameQueue {
 
+    private final String serverName;
     private final String kitName;
     private final boolean ranked;
 
