@@ -2,6 +2,7 @@ package dev.thatsmybaby.practice.object;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.utils.TextFormat;
 import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.factory.MatchFactory;
 import dev.thatsmybaby.practice.object.match.DuelMatch;
@@ -23,7 +24,7 @@ public final class GameQueue {
 
     private long nextCheck = 0;
 
-    public void addPlayer(Player player) {
+    public void joinAsPlayer(Player player) {
         this.players.add(player.getName());
 
         // TODO: Give hotbar items again
@@ -46,7 +47,7 @@ public final class GameQueue {
         if (firstPlayer == null) {
             this.players.remove(firstPlayerName);
 
-            AbstractPractice.debug("Player " + firstPlayerName + " non is online... Discarding!");
+            AbstractPractice.debug("The " + firstPlayerName + " player is not online... Discarded");
 
             return;
         }
@@ -60,11 +61,10 @@ public final class GameQueue {
         }
 
         Player secondPlayer = Server.getInstance().getPlayerExact(secondPlayerName);
-
         if (secondPlayer == null) {
             this.players.remove(secondPlayerName);
 
-            AbstractPractice.debug("Player " + secondPlayerName + " non is online... Discarding!");
+            AbstractPractice.debug("The " + secondPlayerName + " player is not online... Discarded");
 
             return;
         }
@@ -73,6 +73,9 @@ public final class GameQueue {
 
         if (match == null) {
             AbstractPractice.debug("Match for " + this.getQueueName() + " not found... Trying to search again in 5 seconds");
+
+            firstPlayer.sendMessage(TextFormat.RED + "Tried to start a match but there are no available arenas.");
+            secondPlayer.sendMessage(TextFormat.RED + "Tried to start a match but there are no available arenas.");
 
             this.nextCheck = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
 
@@ -85,7 +88,13 @@ public final class GameQueue {
         match.joinAsPlayer(firstPlayer);
         match.joinAsPlayer(secondPlayer);
 
-        // TODO: When execute Match#generateWorld() going to move start the match? idk going to see how make it
-        TaskUtils.runAsync(match::generateWorld);
+        firstPlayer.sendMessage(Placeholders.replacePlaceholders("QUEUE_FOUND_OPPONENT", firstPlayerName, secondPlayerName));
+        secondPlayer.sendMessage(Placeholders.replacePlaceholders("QUEUE_FOUND_OPPONENT", secondPlayerName, firstPlayerName));
+
+        if (match.worldGenerated()) {
+            match.start();
+        } else {
+            TaskUtils.runAsync(match::generateWorld);
+        }
     }
 }

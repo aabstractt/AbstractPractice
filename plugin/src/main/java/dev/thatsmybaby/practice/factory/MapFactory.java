@@ -28,17 +28,6 @@ public final class MapFactory {
         for (String mapName : config.getKeys()) {
             Map<String, Object> mapValues = (Map<String, Object>) config.get(mapName);
 
-//            List<GameKit> kits = new ArrayList<>();
-//            for (String kitName : (List<String>)mapValues.get("kits")) {
-//                GameKit kit = KitFactory.getInstance().getKit(kitName);
-//
-//                if (kit == null) {
-//                    continue;
-//                }
-//
-//                kits.add(kit);
-//            }
-
             this.registerNewMap(new GameMap(
                     mapName,
                     ((List<String>)mapValues.get("kits")).stream().map(kitName -> KitFactory.getInstance().getKit(kitName)).filter(Objects::nonNull).collect(Collectors.toList()),
@@ -46,7 +35,8 @@ public final class MapFactory {
                     Placeholders.stringNullableToLocation(mapValues.get("firstPosition").toString()),
                     Placeholders.stringNullableToLocation(mapValues.get("secondPosition").toString()),
                     Placeholders.stringNullableToVector(mapValues.get("firstCorner").toString()),
-                    Placeholders.stringNullableToVector(mapValues.get("secondCorner").toString())
+                    Placeholders.stringNullableToVector(mapValues.get("secondCorner").toString()),
+                    0
             ), false);
         }
     }
@@ -73,5 +63,9 @@ public final class MapFactory {
 
     public GameMap getRandomMap() {
         return null;
+    }
+
+    public int getInitialCountdown() {
+        return AbstractPractice.getInstance().getConfig().getInt("default-countdown");
     }
 }

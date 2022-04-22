@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public final class MatchFactory {
 
@@ -16,6 +17,12 @@ public final class MatchFactory {
     private final Map<String, GameMatch> matchMap = new HashMap<>();
 
     public GameMatch createMatch(Class<? extends GameMatch> type, GameQueue queue, GameMap map) {
+        GameMatch match = this.getRandomMatch(type, queue, map);
+
+        if (match != null) {
+            return match;
+        }
+
         if (map == null) {
             if ((map = MapFactory.getInstance().getRandomMap()) == null) {
                 return null;
@@ -23,7 +30,7 @@ public final class MatchFactory {
         }
 
         try {
-            GameMatch match = type.getDeclaredConstructor(GameMatch.class, GameKit.class, Integer.class).newInstance(map, queue.getKit(), map.increaseTimesPlayed());
+            match = type.getDeclaredConstructor(GameMatch.class, GameKit.class, Integer.class).newInstance(map, queue.getKit(), map.increaseTimesPlayed());
 
             this.matchMap.put(match.getWorldName(), match);
 
@@ -31,5 +38,22 @@ public final class MatchFactory {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private GameMatch getRandomMatch(Class<? extends GameMatch> type, GameQueue queue, GameMap map) {
+        Stream<GameMatch> stream = this.matchMap.values().stream().
+                filter(match -> match.getClass().isAssignableFrom(type)).
+                filter(GameMatch::isIdle).
+                filter(match -> match.getKit().getName().equals(queue.getKit().getName()));
+
+        if (map != null) {
+            stream = stream.filter(match -> match.getMap().getMapName().equals(map.getMapName()));
+        }
+
+        return stream.findAny().orElse(null);
+    }
+
+    public void unregisterMatch(String worldName) {
+        this.matchMap.remove(worldName);
     }
 }

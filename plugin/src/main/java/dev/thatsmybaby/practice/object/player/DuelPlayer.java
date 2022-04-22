@@ -3,6 +3,8 @@ package dev.thatsmybaby.practice.object.player;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.player.scoreboard.ScoreboardBuilder;
+import dev.thatsmybaby.shared.Placeholders;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,6 +15,7 @@ public final class DuelPlayer {
     private final String xuid;
     private final String name;
     private final GameMatch match;
+    private final ScoreboardBuilder scoreboardBuilder;
 
     @Setter private boolean spectating = false;
 
@@ -43,5 +46,17 @@ public final class DuelPlayer {
 
         instance.getInventory().setHeldItemSlot(0);
         instance.getInventory().setHeldItemIndex(0);
+    }
+
+    public void matchAttributes() {
+        Player instance = this.getInstance();
+
+        if (instance == null) return;
+
+        this.defaultAttributes();
+
+        this.match.getKit().giveAttributes(instance);
+
+        instance.sendMessage(Placeholders.replacePlaceholders("MATCH_GIVE_KIT"));
     }
 }

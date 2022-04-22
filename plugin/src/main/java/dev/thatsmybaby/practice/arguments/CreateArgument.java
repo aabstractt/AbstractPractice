@@ -74,7 +74,8 @@ public final class CreateArgument extends PlayerArgument {
                 null,
                 null,
                 null,
-                null
+                null,
+                0
         ), true);
 
         sender.sendMessage(TextFormat.GREEN + "New map registered!");

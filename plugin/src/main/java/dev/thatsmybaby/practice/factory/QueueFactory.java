@@ -1,5 +1,6 @@
 package dev.thatsmybaby.practice.factory;
 
+import cn.nukkit.Player;
 import cn.nukkit.Server;
 import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.object.GameKit;
@@ -22,8 +23,14 @@ public final class QueueFactory {
             this.queueSet.add(new GameQueue(kit, true));
         }
 
-        Server.getInstance().getScheduler().scheduleRepeatingTask(AbstractPractice.getInstance(), () -> {
-            queueSet.forEach(GameQueue::update);
-        }, 20, true);
+        Server.getInstance().getScheduler().scheduleRepeatingTask(AbstractPractice.getInstance(), () -> queueSet.forEach(GameQueue::update), 20, true);
+    }
+
+    public GameQueue getQueueType(String kitName, boolean ranked) {
+        return this.queueSet.stream().filter(queue -> queue.getKit().getName().equalsIgnoreCase(kitName) && queue.isRanked() == ranked).findFirst().orElse(null);
+    }
+
+    public GameQueue getPlayerQueue(Player player) {
+        return this.queueSet.stream().filter(queue -> queue.getPlayers().contains(player.getName())).findFirst().orElse(null);
     }
 }
