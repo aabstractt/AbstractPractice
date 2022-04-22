@@ -33,4 +33,8 @@ public final class Placeholders {
     public static String replacePlaceholders(String k, String... args) {
         return null;
     }
+
+    public static void log(String message) {
+
+    }
 }

@@ -2,8 +2,8 @@ package dev.thatsmybaby.practice.arguments.test;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.TextFormat;
-import dev.thatsmybaby.practice.factory.QueueFactory;
-import dev.thatsmybaby.practice.object.GameQueue;
+import dev.thatsmybaby.shared.factory.QueueFactory;
+import dev.thatsmybaby.shared.object.GameQueue;
 import dev.thatsmybaby.shared.Placeholders;
 import dev.thatsmybaby.shared.command.PlayerArgument;
 

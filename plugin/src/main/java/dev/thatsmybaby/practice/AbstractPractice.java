@@ -5,11 +5,12 @@ import dev.thatsmybaby.practice.arguments.*;
 import dev.thatsmybaby.practice.arguments.test.QueueJoinArgument;
 import dev.thatsmybaby.practice.factory.KitFactory;
 import dev.thatsmybaby.practice.factory.MapFactory;
-import dev.thatsmybaby.practice.factory.QueueFactory;
+import dev.thatsmybaby.practice.factory.MatchFactory;
 import dev.thatsmybaby.practice.listener.BlockBreakListener;
 import dev.thatsmybaby.practice.listener.BlockPlaceListener;
 import dev.thatsmybaby.shared.command.Argument;
 import dev.thatsmybaby.shared.command.CoreAdminCommand;
+import dev.thatsmybaby.shared.provider.GameProvider;
 import lombok.Getter;
 
 public final class AbstractPractice extends PluginBase {
@@ -20,9 +21,12 @@ public final class AbstractPractice extends PluginBase {
     public void onEnable() {
         instance = this;
 
+        GameProvider.getInstance().init(this.getConfig().getString("redis.address"), this.getConfig().getString("redis.password"), new PacketHandler());
+
         KitFactory.getInstance().init();
-        QueueFactory.getInstance().init();
         MapFactory.getInstance().init();
+
+        MatchFactory.getInstance().init();
 
         this.getServer().getCommandMap().register("coreadmin", new CoreAdminCommand("coreadmin", "Abstract Practice management command", "", new String[]{"ca"}));
 
@@ -46,16 +50,17 @@ public final class AbstractPractice extends PluginBase {
         );
     }
 
+    @Override
+    public void onDisable() {
+        GameProvider.getInstance().close();
+    }
+
     private void registerArguments(Argument... arguments) {
         ((CoreAdminCommand) this.getServer().getCommandMap().getCommand("coreadmin")).registerArgument(arguments);
     }
 
     public static String getServerName() {
         return instance.getConfig().getString("settings.server-name");
-    }
-
-    public static void debug(String message) {
-        instance.getLogger().info(message);
     }
 
     public static boolean isSchematic() {
