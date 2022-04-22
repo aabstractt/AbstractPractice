@@ -1,5 +1,6 @@
 package dev.thatsmybaby.practice.factory;
 
+import cn.nukkit.Player;
 import dev.thatsmybaby.practice.object.GameKit;
 import dev.thatsmybaby.practice.object.GameMap;
 import dev.thatsmybaby.practice.object.GameMatch;
@@ -23,10 +24,8 @@ public final class MatchFactory {
             return match;
         }
 
-        if (map == null) {
-            if ((map = MapFactory.getInstance().getRandomMap()) == null) {
-                return null;
-            }
+        if (map == null && (map = MapFactory.getInstance().getRandomMap()) == null) {
+            return null;
         }
 
         try {
@@ -51,6 +50,10 @@ public final class MatchFactory {
         }
 
         return stream.findAny().orElse(null);
+    }
+
+    public GameMatch getPlayerMatch(Player player) {
+        return this.matchMap.values().stream().filter(match -> match.inArena(player)).findAny().orElse(null);
     }
 
     public void unregisterMatch(String worldName) {

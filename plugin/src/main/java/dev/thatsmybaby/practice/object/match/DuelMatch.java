@@ -13,6 +13,19 @@ public final class DuelMatch extends GameMatch {
     }
 
     @Override
+    public void start() {
+        boolean first = true;
+
+        for (GamePlayer gamePlayer : this.getPlayersAlive()) {
+            gamePlayer.getInstance().teleport(first ? this.map.getFirstPosition() : this.map.getSecondPosition());
+
+            first = !first;
+        }
+
+        super.start();
+    }
+
+    @Override
     public GamePlayer fetchGamePlayer(Player player) {
         return new GamePlayer(player.getLoginChainData().getXUID(), player.getName(), this);
     }

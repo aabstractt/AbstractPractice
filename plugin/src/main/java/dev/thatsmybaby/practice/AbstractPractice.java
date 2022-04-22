@@ -6,6 +6,8 @@ import dev.thatsmybaby.practice.arguments.test.QueueJoinArgument;
 import dev.thatsmybaby.practice.factory.KitFactory;
 import dev.thatsmybaby.practice.factory.MapFactory;
 import dev.thatsmybaby.practice.factory.QueueFactory;
+import dev.thatsmybaby.practice.listener.BlockBreakListener;
+import dev.thatsmybaby.practice.listener.BlockPlaceListener;
 import dev.thatsmybaby.shared.command.Argument;
 import dev.thatsmybaby.shared.command.CoreAdminCommand;
 import lombok.Getter;
@@ -30,6 +32,9 @@ public final class AbstractPractice extends PluginBase {
                 new AddKitArgument("addkit", "Add kit to a map", "abstract.practice.add.kit"),
                 new QueueJoinArgument("queuejoin", "Join to the queue", "abstract.practice.queue")
         );
+
+        this.getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+        this.getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
     }
 
     private void registerArguments(Argument... arguments) {
