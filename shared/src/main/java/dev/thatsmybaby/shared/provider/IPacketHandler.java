@@ -1,8 +1,8 @@
 package dev.thatsmybaby.shared.provider;
 
-import dev.thatsmybaby.shared.provider.redis.RedisMessage;
+import dev.thatsmybaby.shared.provider.packet.RedisPacket;
 
 public interface IPacketHandler {
 
-    void handle(RedisMessage packet);
+    void handle(RedisPacket packet);
 }

@@ -1,4 +1,4 @@
-package dev.thatsmybaby.shared.provider.redis;
+package dev.thatsmybaby.shared.provider.packet;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -6,7 +6,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerResponseKitsPacket extends RedisMessage {
+public class ServerResponseKitsPacket extends RedisPacket {
 
     public String serverName;
 
@@ -34,10 +34,5 @@ public class ServerResponseKitsPacket extends RedisMessage {
         for (String kitName : this.kits) {
             stream.writeUTF(kitName);
         }
-    }
-
-    @Override
-    public void handle() {
-        // TODO: Handle
     }
 }

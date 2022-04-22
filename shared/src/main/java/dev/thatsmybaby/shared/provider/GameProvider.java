@@ -4,9 +4,7 @@ import cn.nukkit.Server;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import dev.thatsmybaby.shared.provider.redis.RedisMessage;
-import dev.thatsmybaby.shared.provider.redis.ServerRequestKitsPacket;
-import dev.thatsmybaby.shared.provider.redis.ServerResponseKitsPacket;
+import dev.thatsmybaby.shared.provider.packet.*;
 import lombok.Getter;
 import redis.clients.jedis.*;
 
@@ -21,11 +19,13 @@ import java.util.function.Function;
 @SuppressWarnings({"UnstableApiUsage", "deprecation"})
 public final class GameProvider {
 
+    public final static String HASH_SERVER_MATCH_REQUEST = "server_match_request:%s";
+
     @Getter private final static GameProvider instance = new GameProvider();
 
     private IPacketHandler handler = null;
 
-    private static final Map<Integer, Class<? extends RedisMessage>> messagesPool = new HashMap<>();
+    private static final Map<Integer, Class<? extends RedisPacket>> messagesPool = new HashMap<>();
 
     private JedisPool jedisPool;
     private Subscription jedisPubSub = null;
@@ -57,10 +57,15 @@ public final class GameProvider {
             Server.getInstance().getLogger().info("Could not connect to redis, synchronization won't work with other servers");
         }
 
-        registerMessage(new ServerRequestKitsPacket(), new ServerResponseKitsPacket());
+        registerMessage(
+                new ServerRequestKitsPacket(),
+                new ServerResponseKitsPacket(),
+                new MatchRequestPacket(),
+                new MatchResponsePacket()
+        );
     }
 
-    public void publish(RedisMessage pk) {
+    public void publish(RedisPacket pk) {
         CompletableFuture.runAsync(() -> execute(jedis -> {
             ByteArrayDataOutput stream = ByteStreams.newDataOutput();
 
@@ -109,14 +114,14 @@ public final class GameProvider {
         }
     }
 
-    public void registerMessage(RedisMessage... pools) {
-        for (RedisMessage pool : pools) {
+    public void registerMessage(RedisPacket... pools) {
+        for (RedisPacket pool : pools) {
             messagesPool.put(pool.getId(), pool.getClass());
         }
     }
 
-    private RedisMessage constructMessage(int pid) {
-        Class<? extends RedisMessage> instance = messagesPool.get(pid);
+    private RedisPacket constructMessage(int pid) {
+        Class<? extends RedisPacket> instance = messagesPool.get(pid);
 
         if (instance == null) {
             return null;
@@ -141,7 +146,7 @@ public final class GameProvider {
         public void onMessage(byte[] channel, byte[] message) {
             ByteArrayDataInput stream = ByteStreams.newDataInput(message);
 
-            RedisMessage pk = constructMessage(stream.readInt());
+            RedisPacket pk = constructMessage(stream.readInt());
 
             if (pk == null) {
                 Server.getInstance().getLogger().warning("Redis packet received is null");
