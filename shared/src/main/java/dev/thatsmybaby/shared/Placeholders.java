@@ -1,10 +1,12 @@
 package dev.thatsmybaby.shared;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.TransferPacket;
+import cn.nukkit.utils.TextFormat;
 
 public final class Placeholders {
 
@@ -37,7 +39,7 @@ public final class Placeholders {
     }
 
     public static void log(String message) {
-
+        Server.getInstance().getLogger().info(TextFormat.AQUA + message);
     }
 
     public static void connectTo(Player player, String serverName) {
