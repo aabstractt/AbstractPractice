@@ -3,7 +3,7 @@ package dev.thatsmybaby.practice.object.match.task;
 import cn.nukkit.scheduler.Task;
 import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.factory.MapFactory;
-import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.match.GameMatch;
 import dev.thatsmybaby.practice.object.player.GamePlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

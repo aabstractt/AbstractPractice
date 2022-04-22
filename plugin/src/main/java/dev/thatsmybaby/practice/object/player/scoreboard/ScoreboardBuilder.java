@@ -3,7 +3,7 @@ package dev.thatsmybaby.practice.object.player.scoreboard;
 import cn.nukkit.Player;
 import cn.nukkit.utils.TextFormat;
 import dev.thatsmybaby.practice.AbstractPractice;
-import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.match.GameMatch;
 import dev.thatsmybaby.practice.object.player.GamePlayer;
 import dev.thatsmybaby.practice.object.player.scoreboard.packets.RemoveObjectivePacket;
 import dev.thatsmybaby.practice.object.player.scoreboard.packets.SetDisplayObjectivePacket;

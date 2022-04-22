@@ -5,7 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.utils.TextFormat;
 import dev.thatsmybaby.practice.object.GameKit;
 import dev.thatsmybaby.practice.object.GameMap;
-import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.match.GameMatch;
 import dev.thatsmybaby.practice.object.match.DuelMatch;
 import dev.thatsmybaby.shared.Placeholders;
 import dev.thatsmybaby.shared.TaskUtils;

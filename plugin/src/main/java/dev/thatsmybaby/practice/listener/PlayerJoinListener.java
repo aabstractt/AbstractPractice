@@ -6,7 +6,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.utils.TextFormat;
 import dev.thatsmybaby.practice.factory.MatchFactory;
-import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.match.GameMatch;
 import dev.thatsmybaby.practice.object.match.DuelMatch;
 import dev.thatsmybaby.shared.TaskUtils;
 import dev.thatsmybaby.shared.object.CrossServerPlayer;

@@ -4,7 +4,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import dev.thatsmybaby.practice.factory.MatchFactory;
-import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.match.GameMatch;
 
 public final class BlockPlaceListener implements Listener {
 

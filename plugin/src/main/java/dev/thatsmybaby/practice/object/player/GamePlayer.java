@@ -3,7 +3,7 @@ package dev.thatsmybaby.practice.object.player;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import dev.thatsmybaby.practice.AbstractPractice;
-import dev.thatsmybaby.practice.object.GameMatch;
+import dev.thatsmybaby.practice.object.match.GameMatch;
 import dev.thatsmybaby.practice.object.player.scoreboard.ScoreboardBuilder;
 import dev.thatsmybaby.shared.Placeholders;
 import lombok.Getter;
