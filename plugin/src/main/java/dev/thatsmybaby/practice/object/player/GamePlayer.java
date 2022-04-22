@@ -18,16 +18,26 @@ public final class GamePlayer {
     private final String xuid;
     private final String name;
     private final GameMatch match;
-    private final ScoreboardBuilder scoreboardBuilder = new ScoreboardBuilder(
-            this,
-            AbstractPractice.getInstance().getConfig().getString("settings.scoreboard-title"),
-            new HashMap<>(),
-            this.match.getWorldName(),
-            ScoreboardBuilder.SIDEBAR,
-            ScoreboardBuilder.ASCENDING
-    );
+    private final ScoreboardBuilder scoreboardBuilder;
 
     @Setter private boolean spectating = false;
+
+    public GamePlayer(String xuid, String name, GameMatch match) {
+        this.xuid = xuid;
+
+        this.name = name;
+
+        this.match = match;
+
+        this.scoreboardBuilder = new ScoreboardBuilder(
+                this,
+                AbstractPractice.getInstance().getConfig().getString("settings.scoreboard-title"),
+                new HashMap<>(),
+                this.match.getWorldName(),
+                ScoreboardBuilder.SIDEBAR,
+                ScoreboardBuilder.ASCENDING
+        );
+    }
 
     public Player getInstance() {
         return Server.getInstance().getPlayerExact(this.name);

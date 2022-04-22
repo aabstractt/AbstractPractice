@@ -42,7 +42,7 @@ public final class AbstractPractice extends PluginBase {
         this.getLogger().warning("Registering 'QueueJoinArgument' because this is a non released version");
 
         registerArguments(
-                new QueueJoinArgument("queuejoin", "Join to the queue", "abstract.practice.queue")
+                new QueueJoinArgument("queuejoin", "Join to the queue on non released", "abstract.practice.queue")
         );
     }
 
