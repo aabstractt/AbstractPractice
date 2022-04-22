@@ -61,7 +61,9 @@ public final class GameMatchCountDownUpdateTask extends Task {
         }
 
         for (GamePlayer player : this.match.getPlayers().values()) {
-            player.matchAttributes();
+            if (!player.isSpectating()) {
+                player.matchAttributes();
+            }
 
             player.getScoreboardBuilder().update();
         }

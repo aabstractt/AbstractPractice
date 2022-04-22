@@ -115,7 +115,7 @@ public class ScoreboardBuilder {
             put("%refilled%", String.valueOf(false));
             put("%refill_time%", "05:00");
             put("%server_name%", AbstractPractice.getServerName());
-            put("%players_count%", String.valueOf(match.getPlayers().size()));
+            put("%players_count%", String.valueOf(match.getPlayersAlive().size()));
             put("%starting_time%", finalStartingString);
         }};
 
