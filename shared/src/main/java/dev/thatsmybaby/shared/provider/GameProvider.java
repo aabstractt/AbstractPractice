@@ -4,6 +4,7 @@ import cn.nukkit.Server;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import dev.thatsmybaby.shared.object.CrossServerPlayer;
 import dev.thatsmybaby.shared.provider.packet.*;
 import lombok.Getter;
 import redis.clients.jedis.*;
@@ -63,7 +64,7 @@ public final class GameProvider {
         );
     }
 
-    public void setPlayerMatchStatus(String xuid, String kitName, boolean ranked, String lastServer) {
+    public void setPlayerCrossServer(String xuid, String kitName, boolean ranked, String opponentName, String lastServer) {
         execute(jedis -> {
             String hash = String.format(HASH_PLAYER_STORAGE, xuid);
 
@@ -75,9 +76,29 @@ public final class GameProvider {
 
             jedis.hset(hash, new HashMap<String, String>() {{
                 put("kitName", kitName);
+                put("opponent", opponentName);
                 put("ranked", Boolean.toString(ranked));
                 put("lastServer", lastServer);
             }});
+        });
+    }
+
+    public CrossServerPlayer getPlayerCrossServer(String xuid) {
+        return execute(jedis -> {
+            Map<String, String> map = jedis.hgetAll(String.format(HASH_PLAYER_STORAGE, xuid));
+
+            if (map.isEmpty()) {
+                return null;
+            }
+
+            jedis.hdel(String.format(HASH_PLAYER_STORAGE, xuid), map.values().toArray(new String[0]));
+
+            return new CrossServerPlayer(
+                    map.get("kitName"),
+                    map.get("opponent"),
+                    map.get("lastServer"),
+                    Boolean.parseBoolean(map.get("ranked"))
+            );
         });
     }
 

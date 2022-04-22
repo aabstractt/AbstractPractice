@@ -2,7 +2,8 @@ package dev.thatsmybaby.practice;
 
 import cn.nukkit.plugin.PluginBase;
 import dev.thatsmybaby.practice.arguments.*;
-import dev.thatsmybaby.practice.arguments.test.QueueJoinArgument;
+import dev.thatsmybaby.practice.listener.PlayerJoinListener;
+import dev.thatsmybaby.shared.test.QueueJoinArgument;
 import dev.thatsmybaby.practice.factory.KitFactory;
 import dev.thatsmybaby.practice.factory.MapFactory;
 import dev.thatsmybaby.practice.factory.MatchFactory;
@@ -30,6 +31,7 @@ public final class AbstractPractice extends PluginBase {
 
         this.getServer().getCommandMap().register("coreadmin", new CoreAdminCommand("coreadmin", "Abstract Practice management command", "", new String[]{"ca"}));
 
+        this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         this.getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
         this.getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
 

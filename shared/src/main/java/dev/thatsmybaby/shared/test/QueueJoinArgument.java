@@ -1,4 +1,4 @@
-package dev.thatsmybaby.practice.arguments.test;
+package dev.thatsmybaby.shared.test;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.TextFormat;
@@ -16,7 +16,7 @@ public final class QueueJoinArgument extends PlayerArgument {
     @Override
     public void execute(Player sender, String commandLabel, String argumentLabel, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(TextFormat.RED + "Usage: /" + commandLabel + " queuejoin <kit>");
+            sender.sendMessage(TextFormat.RED + "Usage: /" + commandLabel + " queuejoin <kit> <?map>");
 
             return;
         }

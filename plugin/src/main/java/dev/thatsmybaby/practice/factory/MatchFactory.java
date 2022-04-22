@@ -1,6 +1,7 @@
 package dev.thatsmybaby.practice.factory;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.utils.TextFormat;
 import dev.thatsmybaby.practice.object.GameKit;
 import dev.thatsmybaby.practice.object.GameMap;
@@ -105,6 +106,12 @@ public final class MatchFactory {
 
     public GameMatch getPlayerMatch(Player player) {
         return this.matchMap.values().stream().filter(match -> match.inArena(player)).findAny().orElse(null);
+    }
+
+    public GameMatch getPlayerMatch(String name) {
+        Player player = Server.getInstance().getPlayerExact(name);
+
+        return player != null ? this.getPlayerMatch(player) : null;
     }
 
     public void unregisterMatch(String worldName) {
