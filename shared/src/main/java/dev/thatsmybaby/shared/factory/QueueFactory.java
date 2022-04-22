@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import dev.thatsmybaby.shared.object.GameQueue;
 import dev.thatsmybaby.shared.Callback;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,7 @@ public final class QueueFactory {
 
     private final Set<GameQueue> queueSet = new HashSet<>();
 
-    public static Callback handler = null;
+    @Setter @Getter private static Callback handler = null;
 
     public void init(List<String> kits) {
         for (String kitName : kits) {

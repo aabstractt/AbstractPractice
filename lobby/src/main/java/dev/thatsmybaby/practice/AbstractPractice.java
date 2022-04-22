@@ -1,6 +1,7 @@
 package dev.thatsmybaby.practice;
 
 import cn.nukkit.plugin.PluginBase;
+import dev.thatsmybaby.shared.factory.QueueFactory;
 import dev.thatsmybaby.shared.provider.GameProvider;
 import lombok.Getter;
 
@@ -15,5 +16,9 @@ public final class AbstractPractice extends PluginBase {
         this.saveDefaultConfig();
 
         GameProvider.getInstance().init(this.getConfig().getString("redis.address"), this.getConfig().getString("redis.password"), new PacketHandler());
+
+        QueueFactory.setHandler((queue, firstPlayer, secondPlayer) -> {
+
+        });
     }
 }

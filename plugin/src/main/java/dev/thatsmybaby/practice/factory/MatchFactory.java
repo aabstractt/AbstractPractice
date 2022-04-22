@@ -32,7 +32,7 @@ public final class MatchFactory {
 
         QueueFactory.getInstance().init(KitFactory.getInstance().getKits().values().stream().map(GameKit::getName).collect(Collectors.toList()));
 
-        QueueFactory.handler = (queue, firstPlayer, secondPlayer) -> {
+        QueueFactory.setHandler((queue, firstPlayer, secondPlayer) -> {
             GameMatch match = this.createMatch(DuelMatch.class, queue, null);
 
             if (match == null) {
@@ -60,7 +60,7 @@ public final class MatchFactory {
             } else {
                 TaskUtils.runAsync(match::generateWorld);
             }
-        };
+        });
     }
 
     public GameMatch createMatch(Class<? extends GameMatch> type, GameQueue queue, GameMap map) {

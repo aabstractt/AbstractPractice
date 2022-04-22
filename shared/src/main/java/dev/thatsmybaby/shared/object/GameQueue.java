@@ -64,6 +64,6 @@ public final class GameQueue {
             return;
         }
 
-        QueueFactory.handler.handle(this, firstPlayer, secondPlayer);
+        QueueFactory.getHandler().handle(this, firstPlayer, secondPlayer);
     }
 }
