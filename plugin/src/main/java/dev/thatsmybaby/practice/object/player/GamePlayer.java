@@ -2,6 +2,7 @@ package dev.thatsmybaby.practice.object.player;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.object.GameMatch;
 import dev.thatsmybaby.practice.object.player.scoreboard.ScoreboardBuilder;
 import dev.thatsmybaby.shared.Placeholders;
@@ -9,13 +10,22 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
+
 @RequiredArgsConstructor @Getter
-public final class DuelPlayer {
+public final class GamePlayer {
 
     private final String xuid;
     private final String name;
     private final GameMatch match;
-    private final ScoreboardBuilder scoreboardBuilder;
+    private final ScoreboardBuilder scoreboardBuilder = new ScoreboardBuilder(
+            this,
+            AbstractPractice.getInstance().getConfig().getString("settings.scoreboard-title"),
+            new HashMap<>(),
+            this.match.getWorldName(),
+            ScoreboardBuilder.SIDEBAR,
+            ScoreboardBuilder.ASCENDING
+    );
 
     @Setter private boolean spectating = false;
 

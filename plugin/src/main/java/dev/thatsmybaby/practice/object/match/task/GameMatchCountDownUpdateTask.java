@@ -4,7 +4,7 @@ import cn.nukkit.scheduler.Task;
 import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.factory.MapFactory;
 import dev.thatsmybaby.practice.object.GameMatch;
-import dev.thatsmybaby.practice.object.player.DuelPlayer;
+import dev.thatsmybaby.practice.object.player.GamePlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -60,7 +60,7 @@ public final class GameMatchCountDownUpdateTask extends Task {
             return;
         }
 
-        for (DuelPlayer player : this.match.getPlayers().values()) {
+        for (GamePlayer player : this.match.getPlayers().values()) {
             player.matchAttributes();
 
             player.getScoreboardBuilder().update();

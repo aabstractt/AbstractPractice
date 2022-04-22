@@ -4,7 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.utils.TextFormat;
 import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.object.GameMatch;
-import dev.thatsmybaby.practice.object.player.DuelPlayer;
+import dev.thatsmybaby.practice.object.player.GamePlayer;
 import dev.thatsmybaby.practice.object.player.scoreboard.packets.RemoveObjectivePacket;
 import dev.thatsmybaby.practice.object.player.scoreboard.packets.SetDisplayObjectivePacket;
 import dev.thatsmybaby.practice.object.player.scoreboard.packets.SetScorePacket;
@@ -25,7 +25,7 @@ public class ScoreboardBuilder {
     public static int ASCENDING = 0;
     public static int DESCENDING = 1;
 
-    private DuelPlayer player;
+    private GamePlayer player;
     private String displayName;
     private Map<String, List<String>> scoreboardLines;
     private String objectiveName;

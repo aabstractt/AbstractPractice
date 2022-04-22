@@ -7,7 +7,8 @@ import dev.thatsmybaby.practice.AbstractPractice;
 import dev.thatsmybaby.practice.factory.MapFactory;
 import dev.thatsmybaby.practice.factory.MatchFactory;
 import dev.thatsmybaby.practice.object.match.task.GameMatchCountDownUpdateTask;
-import dev.thatsmybaby.practice.object.player.DuelPlayer;
+import dev.thatsmybaby.practice.object.player.GamePlayer;
+import dev.thatsmybaby.shared.Placeholders;
 import dev.thatsmybaby.shared.task.TaskHandlerStorage;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,8 @@ import lombok.Setter;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class GameMatch extends TaskHandlerStorage {
 
@@ -25,15 +28,15 @@ public abstract class GameMatch extends TaskHandlerStorage {
         RESTARTING()
     }
 
-    @Getter private final GameMap map;
-    @Getter private final GameKit kit;
+    @Getter protected final GameMap map;
+    @Getter protected final GameKit kit;
 
-    @Getter private final int id;
-    @Getter private final String worldName;
+    @Getter protected final int id;
+    @Getter protected final String worldName;
 
     @Getter @Setter private MatchStatus status = MatchStatus.STARTING;
 
-    @Getter private final Map<String, DuelPlayer> players = new HashMap<>();
+    @Getter private final Map<String, GamePlayer> players = new HashMap<>();
 
     public GameMatch(GameMap map, GameKit kit, int id) {
         this.map = map;
@@ -66,17 +69,49 @@ public abstract class GameMatch extends TaskHandlerStorage {
     }
 
     public void joinAsPlayer(Player player) {
-        DuelPlayer duelPlayer = this.fetchDuelPlayer(player);
+        GamePlayer gamePlayer = this.fetchGamePlayer(player);
 
-        this.players.put(duelPlayer.getXuid(), duelPlayer);
+        this.players.put(gamePlayer.getXuid(), gamePlayer);
 
-        duelPlayer.defaultAttributes();
+        gamePlayer.defaultAttributes();
+
+        player.dataPacket(gamePlayer.getScoreboardBuilder().initialize());
 
         this.pushScoreboardUpdate();
     }
+    
+    public GamePlayer getPlayer(Player player) {
+        return this.players.get(player.getLoginChainData().getXUID());
+    }
 
+    public boolean inArenaAsPlayer(Player player) {
+        GamePlayer gamePlayer = this.getPlayer(player);
+
+        return gamePlayer != null && !gamePlayer.isSpectating();
+    }
+
+    public boolean inArenaAsSpectator(Player player) {
+        GamePlayer gamePlayer = this.getPlayer(player);
+
+        return gamePlayer != null && gamePlayer.isSpectating();
+    }
+    
+    public boolean inArena(Player player) {
+        return this.getPlayer(player) != null;
+    }
+
+    public Set<GamePlayer> getPlayersAlive() {
+        return this.players.values().stream().filter(player -> !player.isSpectating()).collect(Collectors.toSet());
+    }
+
+    public Set<GamePlayer> getSpectators() {
+        return this.players.values().stream().filter(GamePlayer::isSpectating).collect(Collectors.toSet());
+    }
+    
     public void broadcastMessage(String message, String... args) {
-
+        for (Player player : this.getWorld().getPlayers().values()) {
+            player.sendMessage(Placeholders.replacePlaceholders(message, args));
+        }
     }
 
     public void start() {
@@ -90,7 +125,7 @@ public abstract class GameMatch extends TaskHandlerStorage {
     }
 
     public void end(boolean reset) {
-        for (DuelPlayer player : this.players.values()) {
+        for (GamePlayer player : this.players.values()) {
             Player instance = player.getInstance();
 
             if (instance == null) {
@@ -127,5 +162,5 @@ public abstract class GameMatch extends TaskHandlerStorage {
 
     }
 
-    public abstract DuelPlayer fetchDuelPlayer(Player player);
+    public abstract GamePlayer fetchGamePlayer(Player player);
 }
