@@ -2,8 +2,8 @@ package dev.thatsmybaby.shared.factory;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import dev.thatsmybaby.shared.object.GameQueue;
 import dev.thatsmybaby.shared.Callback;
+import dev.thatsmybaby.shared.object.GameQueue;
 import lombok.Getter;
 import lombok.Setter;
 
